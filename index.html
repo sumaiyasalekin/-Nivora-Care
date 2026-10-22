@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nivora Care — Hospital Management System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="shell">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">N</div>
+        <div>
+          <strong>Nivora Care</strong>
+          <small>Hospital System</small>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav"></nav>
+
+      <div class="aside-note">
+        <b>Private Local Workspace</b>
+        All records stay in your browser localStorage. Fictional data only.
+      </div>
+    </aside>
+
+    <!-- Main Application Canvas -->
+    <main class="main">
+      <header class="top-bar">
+        <div>
+          <h1 id="pageTitle">Overview</h1>
+          <p id="pageSub">A thoughtful view of care and operations.</p>
+        </div>
+
+        <div class="top-right">
+          <span class="datepill" id="todayLabel"></span>
+          <button class="btn alt no-print" id="sampleBtn">Load Sample Data</button>
+          <button class="btn alt no-print" id="resetBtn">Reset Data</button>
+        </div>
+      </header>
+
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+
+  <!-- Reusable Modal Window -->
+  <div id="modalWrap" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <strong id="modalTitle">Details</strong>
+        <button class="btn alt" id="modalClose">Close</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
