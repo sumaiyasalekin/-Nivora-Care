@@ -27,3 +27,6 @@ Nivora Care is a healthcare management web application built with vanilla JavaSc
    Open Command Prompt or Terminal in your project folder and run:
    ```bash
    node --env-file=.env server.js
+
+**Author**
+**Sumaiya Salekin Saba**
