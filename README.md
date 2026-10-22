@@ -2,6 +2,10 @@
 
 Nivora Care is a healthcare management web application built with vanilla JavaScript, HTML5, CSS3, and Node.js built-in modules. It features an AI Report Assistant powered by ChatterMate.
 
+<p align="center">
+  <img src="Screenshot 2026-10-22 145911.png" alt="Nivora Care Overview" width="700">
+</p>
+
 ## Features
 - **Dashboard**: Financial overview, metrics, and collection tracking.
 - **Patient Management**: Registration, auto ID generation, search, and local storage persistence.
