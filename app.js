@@ -1758,7 +1758,7 @@
     });
 
     saveDB();
-    toast('50 manhwa character patients and sample activity loaded');
+    toast('50 patients and sample activity loaded');
     renderShell();
   }
 
