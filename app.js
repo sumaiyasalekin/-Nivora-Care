@@ -1610,13 +1610,77 @@
       return iso(d);
     };
 
+    // 25 Popular Female Manhwa Characters
+    const femaleNames = [
+      'Cha Hae-In',         // Solo Leveling
+      'Yoo Sangah',         // Omniscient Reader's Viewpoint
+      'Han Sooyoung',       // Omniscient Reader's Viewpoint
+      'Jung Heewon',        // Omniscient Reader's Viewpoint
+      'Lee Jihye',          // Omniscient Reader's Viewpoint
+      'Athanasia de Alger', // Who Made Me a Princess
+      'Navier Ellie Trovi', // The Remarried Empress
+      'Penelope Eckhart',   // Villains Are Destined to Die
+      'Roxana Agriche',     // The Way to Protect the Female Lead's Older Brother
+      'Tessia Eralith',     // The Beginning After the End
+      'Caera Denoir',       // The Beginning After the End
+      'Endorsi Jahad',      // Tower of God
+      'Yuri Jahad',         // Tower of God
+      'Yeon Ehwa',          // Tower of God
+      'Shinea',             // Eleceed (Jiyoung Yoo)
+      'Jiyoung Yoo',        // Eleceed
+      'Carlyn',             // Leveling Up My Husband to the Max
+      'Tara Elias',         // I'll Save This Damned Family
+      'Florentia Lombardi', // I Shall Master this Family
+      'Medea Solon',        // Your Throne
+      'Psyche Callista',    // Your Throne
+      'Crystal Haggard',    // Lady Crystal Is a Boy
+      'Aria Roscente',      // The Villainess Reverses the Hourglass
+      'Adele',              // A Stepmother's Marchen
+      'Shuri Von Neuschwanstein' // A Stepmother's Marchen
+    ];
+
+    // 25 Popular Male Manhwa Characters
+    const maleNames = [
+      'Sung Jin-Woo',       // Solo Leveling
+      'Kim Dokja',          // Omniscient Reader's Viewpoint
+      'Yoo Joonghyuk',      // Omniscient Reader's Viewpoint
+      'Cale Henituse',      // Trash of the Count's Family
+      'Arthur Leywin',      // The Beginning After the End
+      'Seo Jiwoo',          // Eleceed
+      'Kayden Break',       // Eleceed
+      'Park Hyung-Suk',     // Lookism (Daniel Park)
+      'Zack Lee',           // Lookism
+      'Vasco',              // Lookism
+      'Twenty-Fifth Baam',  // Tower of God
+      'Khun Aguero Agnes',  // Tower of God
+      'Rak Wraithraiser',   // Tower of God
+      'Lloyd Frontera',     // The Greatest Estate Developer
+      'Javier Asrahan',     // The Greatest Estate Developer
+      'Suho Kang',          // Solo Leveling: Ragnarok
+      'Chung Myung',        // Return of the Blossoming Blade
+      'Jin Mu-Won',         // Legend of the Northern Blade
+      'Cheon Yeo-Woon',     // Nano Machine
+      'Lucas',              // Who Made Me a Princess
+      'Claude de Alger',    // Who Made Me a Princess
+      'Callisto Regulus',   // Villains Are Destined to Die
+      'Heinrey Alles Blonsboia', // The Remarried Empress
+      'Ijekiel Alpheus',    // Who Made Me a Princess
+      'Ryu Han-Bin'         // Survival Story of a Sword King
+    ];
+
     // 50 fictional patients
     for (let i = 1; i <= 50; i++) {
+      const isFemale = i % 2 === 0;
+      const sex = isFemale ? 'Female' : 'Male';
+      const namePool = isFemale ? femaleNames : maleNames;
+      const nameIndex = Math.floor((i - 1) / 2) % namePool.length;
+      const patientName = namePool[nameIndex];
+
       db.patients.push({
         id: 'P-' + (1000 + i),
-        name: `Sample Patient ${String(i).padStart(2, '0')}`,
+        name: patientName,
         age: 18 + ((i * 7) % 63),
-        sex: i % 2 === 0 ? 'Female' : 'Male',
+        sex: sex,
         phone: '0170000' + String(1000 + i),
         address: 'Fictional address, Bangladesh',
         registered: dateOffset((i * 3) % 30)
@@ -1694,7 +1758,7 @@
     });
 
     saveDB();
-    toast('50 fictional patients and sample activity loaded');
+    toast('50 manhwa character patients and sample activity loaded');
     renderShell();
   }
 
