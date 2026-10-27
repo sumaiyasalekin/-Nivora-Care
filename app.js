@@ -105,6 +105,7 @@
 
   let db = readDB();
   let currentView = 'overview';
+  let sessionApiKey = '';
   let activeReport = 'collection';
   let searchQuery = '';
 
@@ -1230,16 +1231,58 @@
   }
 
   // Settings
-  function renderSettings() {
-    return `
-      <div class="card panel">
-        <h3>System Settings</h3>
-        <p>Manage your fictional local browser storage dataset.</p>
-        <button class="btn" id="loadSampleBtn">Load Fictional Sample Data</button>
-        <button class="btn danger" id="clearDataBtn">Reset All Data</button>
+
+function renderSettings() {
+  return `
+    <div class="card panel">
+      <h3>System Settings</h3>
+      <p>Manage your local workspace and sample records.</p>
+
+      <div style="margin-top:24px; padding:20px; border:1px solid var(--line); border-radius:12px;">
+        <h3>AI Report Assistant</h3>
+        <p class="panel-sub">
+          Enter your own ChatterMate API key to test AI-powered hospital reports.
+          Your key is used for this browser session only.
+        </p>
+
+        <div class="form-field" style="margin-top:16px;">
+          <label for="chatterMateKey">ChatterMate API Key</label>
+          <input
+            id="chatterMateKey"
+            type="password"
+            placeholder="Paste your ChatterMate API key"
+            autocomplete="off"
+            style="width:100%;"
+          >
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+          <button class="btn" id="testAiKeyBtn" type="button">
+            Test & Use Key
+          </button>
+          <button class="btn alt" id="clearAiKeyBtn" type="button">
+            Clear Key
+          </button>
+        </div>
+
+        <p id="aiKeyStatus" class="panel-sub" role="status" aria-live="polite" style="margin-top:12px;">
+          ${sessionApiKey
+            ? 'A key is active for this session.'
+            : 'No session key added. The server will use its .env key if configured.'}
+        </p>
       </div>
-    `;
-  }
+
+      <div style="margin-top:24px;">
+        <button class="btn" id="loadSampleBtn" type="button">
+          Load Fictional Sample Data
+        </button>
+        <button class="btn danger" id="clearDataBtn" type="button">
+          Reset All Data
+        </button>
+      </div>
+    </div>`;
+}
+
 
   // Event handlers
   function bindEvents() {
@@ -1248,6 +1291,71 @@
         currentView = button.dataset.go;
         renderShell();
       };
+      
+const testAiKeyBtn = document.getElementById('testAiKeyBtn');
+
+if (testAiKeyBtn) {
+  testAiKeyBtn.onclick = async () => {
+    const input = document.getElementById('chatterMateKey');
+    const status = document.getElementById('aiKeyStatus');
+    const key = input?.value.trim();
+
+    if (!key) {
+      if (status) status.textContent = 'Please enter an API key first.';
+      return;
+    }
+
+    testAiKeyBtn.disabled = true;
+    testAiKeyBtn.textContent = 'Testing...';
+
+    try {
+      const response = await fetch('/test-key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey: key })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'API key verification failed.');
+      }
+
+      sessionApiKey = key;
+      input.value = '';
+
+      if (status) {
+        status.textContent =
+          'Connected successfully! Your key is active for this session.';
+      }
+
+      toast('ChatterMate API key verified');
+    } catch (error) {
+      if (status) status.textContent = error.message;
+    } finally {
+      testAiKeyBtn.disabled = false;
+      testAiKeyBtn.textContent = 'Test & Use Key';
+    }
+  };
+}
+
+const clearAiKeyBtn = document.getElementById('clearAiKeyBtn');
+
+if (clearAiKeyBtn) {
+  clearAiKeyBtn.onclick = () => {
+    sessionApiKey = '';
+
+    const input = document.getElementById('chatterMateKey');
+    const status = document.getElementById('aiKeyStatus');
+
+    if (input) input.value = '';
+    if (status) status.textContent =
+      'Session key cleared. The server will use its .env key if configured.';
+
+    toast('Session API key cleared');
+  };
+}
+
     });
 
     // Patient registration
@@ -1563,14 +1671,17 @@
     box.scrollTop = box.scrollHeight;
 
     try {
-      const res = await fetch('/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: q,
-          data: db
-        })
-      });
+      
+const res = await fetch('/ask', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    question: q,
+    data: db,
+    apiKey: sessionApiKey
+  })
+});
+
 
       const data = await res.json();
 
