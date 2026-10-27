@@ -1274,7 +1274,7 @@ function renderSettings() {
 
       <div style="margin-top:24px;">
         <button class="btn" id="loadSampleBtn" type="button">
-          Load Fictional Sample Data
+          Load Sample Data
         </button>
         <button class="btn danger" id="clearDataBtn" type="button">
           Reset All Data
